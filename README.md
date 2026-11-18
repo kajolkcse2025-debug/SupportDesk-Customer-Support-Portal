@@ -58,7 +58,7 @@ git clone YOUR_REPOSITORY_URL
 cd customer-support-portal
 ```
 
-Replace `YOUR_REPOSITORY_URL` with your GitHub repository URL.
+https://github.com/kajolkcse2025-debug/SupportDesk-Customer-Support-Portal
 
 ### 2. Install backend dependencies
 
