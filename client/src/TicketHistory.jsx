@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import API_BASE_URL from "./api";
 
 function TicketHistory({ ticketId }) {
   const [history, setHistory] = useState([]);
@@ -12,7 +13,7 @@ function TicketHistory({ ticketId }) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}/history`,
+        `${API_BASE_URL}/api/tickets/${ticketId}/history`,
         {
           method: "GET",
           credentials: "include",

@@ -4,6 +4,7 @@ import Auth from "./Auth";
 import Tickets from "./Tickets";
 import AgentDashboard from "./AgentDashboard";
 import AdminDashboard from "./AdminDashboard";
+import API_BASE_URL from "./api";
 import "./App.css";
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
     async function checkSession() {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/auth/me",
+          `${API_BASE_URL}/api/auth/me`,
           { credentials: "include" }
         );
 
@@ -34,7 +35,7 @@ function App() {
 
   async function handleLogout() {
     try {
-      await fetch("http://localhost:5000/api/auth/logout", {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -67,10 +68,8 @@ function App() {
 
   return (
     <div className="app-container">
-
       {/* SIDEBAR */}
       <aside className="sidebar">
-
         <div className="brand">
           <div className="brand-icon">S</div>
           <h2>SupportDesk</h2>
@@ -102,22 +101,18 @@ function App() {
 
           <p className="sidebar-version">SupportDesk v1.0</p>
         </div>
-
       </aside>
 
       {/* MAIN CONTENT */}
       <main className="main-content">
-
         {/* TOP HEADER */}
         <header className="topbar">
-
           <div>
             <p className="breadcrumb">Workspace / Dashboard</p>
             <h1>Dashboard</h1>
           </div>
 
           <div className="topbar-actions">
-
             <div className="user-profile">
               <div className="avatar">
                 {user.name?.charAt(0).toUpperCase()}
@@ -135,13 +130,11 @@ function App() {
             >
               Logout ↗
             </button>
-
           </div>
         </header>
 
         {/* WELCOME SECTION */}
         <section className="welcome-section" id="dashboard">
-
           <div>
             <h2>Welcome back, {user.name}! 👋</h2>
             <p>
@@ -152,24 +145,15 @@ function App() {
           <div className="date-label">
             ✦ Support workspace
           </div>
-
         </section>
 
         {/* ROLE-BASED DASHBOARDS */}
         <section className="dashboard-content" id="tickets">
+          {user.role === "customer" && <Tickets />}
 
-          {user.role === "customer" && (
-            <Tickets />
-          )}
+          {user.role === "agent" && <AgentDashboard />}
 
-          {user.role === "agent" && (
-            <AgentDashboard />
-          )}
-
-          {user.role === "admin" && (
-            <AdminDashboard />
-          )}
-
+          {user.role === "admin" && <AdminDashboard />}
         </section>
 
         {/* FOOTER */}
@@ -177,7 +161,6 @@ function App() {
           <span>SupportDesk</span>
           <span>Customer Support Management Platform</span>
         </footer>
-
       </main>
     </div>
   );

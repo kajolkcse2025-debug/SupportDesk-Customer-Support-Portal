@@ -1,5 +1,6 @@
 
 import { useEffect, useMemo, useState } from "react";
+import API_BASE_URL from "./api";
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
@@ -15,7 +16,6 @@ function AdminDashboard() {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("success");
 
-  // NEW: Create agent form state
   const [agentName, setAgentName] = useState("");
   const [agentEmail, setAgentEmail] = useState("");
   const [agentPassword, setAgentPassword] = useState("");
@@ -26,10 +26,10 @@ function AdminDashboard() {
 
     try {
       const [ticketResponse, agentResponse] = await Promise.all([
-        fetch("http://localhost:5000/api/tickets/all", {
+        fetch(`${API_BASE_URL}/api/tickets/all`, {
           credentials: "include",
         }),
-        fetch("http://localhost:5000/api/tickets/agents", {
+        fetch(`${API_BASE_URL}/api/tickets/agents`, {
           credentials: "include",
         }),
       ]);
@@ -61,7 +61,6 @@ function AdminDashboard() {
     loadData();
   }, []);
 
-  // NEW: Create support agent
   async function createAgent(event) {
     event.preventDefault();
 
@@ -82,7 +81,7 @@ function AdminDashboard() {
       setMessage("");
 
       const response = await fetch(
-        "http://localhost:5000/api/tickets/agents",
+        `${API_BASE_URL}/api/tickets/agents`,
         {
           method: "POST",
           credentials: "include",
@@ -172,7 +171,7 @@ function AdminDashboard() {
       setMessage("");
 
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}/assign`,
+        `${API_BASE_URL}/api/tickets/${ticketId}/assign`,
         {
           method: "POST",
           credentials: "include",
@@ -425,7 +424,6 @@ function AdminDashboard() {
         </article>
       </section>
 
-      {/* NEW: Create Support Agent */}
       <section className="admin-v2-create-agent">
         <div className="admin-v2-create-agent-heading">
           <span className="admin-v2-eyebrow">TEAM MANAGEMENT</span>

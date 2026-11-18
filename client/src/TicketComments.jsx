@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import API_BASE_URL from "./api";
 
 function TicketComments({ ticketId }) {
   const [comments, setComments] = useState([]);
@@ -11,7 +12,7 @@ function TicketComments({ ticketId }) {
   async function loadComments() {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}/comments`,
+        `${API_BASE_URL}/api/tickets/${ticketId}/comments`,
         {
           credentials: "include",
         }
@@ -48,7 +49,7 @@ function TicketComments({ ticketId }) {
       setMessage("");
 
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}/comments`,
+        `${API_BASE_URL}/api/tickets/${ticketId}/comments`,
         {
           method: "POST",
           credentials: "include",

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import TicketComments from "./TicketComments";
 import TicketHistory from "./TicketHistory";
+import API_BASE_URL from "./api";
 import "./Tickets.css";
 
 function Tickets() {
@@ -17,7 +18,7 @@ function Tickets() {
   async function loadTickets() {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/tickets",
+        `${API_BASE_URL}/api/tickets`,
         { credentials: "include" }
       );
 
@@ -49,7 +50,7 @@ function Tickets() {
       setSubmitting(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/tickets",
+        `${API_BASE_URL}/api/tickets`,
         {
           method: "POST",
           headers: {
@@ -108,7 +109,6 @@ function Tickets() {
 
   return (
     <div className="customer-workspace">
-
       {/* WELCOME */}
       <section className="customer-welcome">
         <div>

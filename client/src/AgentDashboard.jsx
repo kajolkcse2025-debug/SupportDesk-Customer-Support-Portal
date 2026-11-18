@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import TicketComments from "./TicketComments";
 import TicketHistory from "./TicketHistory";
+import API_BASE_URL from "./api";
 import "./AgentDashboard.css";
 
 function AgentDashboard() {
@@ -17,7 +18,7 @@ function AgentDashboard() {
   async function loadTickets() {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/tickets/assigned",
+        `${API_BASE_URL}/api/tickets/assigned`,
         { credentials: "include" }
       );
 
@@ -73,7 +74,7 @@ function AgentDashboard() {
       setMessageType("");
 
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}/status`,
+        `${API_BASE_URL}/api/tickets/${ticketId}/status`,
         {
           method: "PATCH",
           credentials: "include",
@@ -111,7 +112,6 @@ function AgentDashboard() {
 
   return (
     <div className="agent-workspace">
-
       {/* WELCOME */}
       <section className="agent-welcome">
         <div>

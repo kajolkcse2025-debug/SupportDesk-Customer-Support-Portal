@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import API_BASE_URL from "./api";
 import "./Auth.css";
 
 function Auth({ onAuthSuccess }) {
@@ -26,7 +27,7 @@ function Auth({ onAuthSuccess }) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/auth/${endpoint}`,
+        `${API_BASE_URL}/api/auth/${endpoint}`,
         {
           method: "POST",
           headers: {
