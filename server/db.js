@@ -4,27 +4,28 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Get the actual location of this db.js file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Always use the database folder inside server
-const databaseFolder = path.join(__dirname, "database");
+// Use Render's persistent disk path when configured.
+// Otherwise, use the existing local SQLite folder.
+const databasePath =
+  process.env.DATABASE_PATH ||
+  path.join(__dirname, "database", "support.db");
 
-fs.mkdirSync(databaseFolder, { recursive: true });
+// Make sure the database folder exists.
+fs.mkdirSync(path.dirname(databasePath), { recursive: true });
 
-const databasePath = path.join(databaseFolder, "support.db");
-
-// Connect to the database
+// Connect to SQLite.
 const db = new Database(databasePath);
 
-// Enable foreign key constraints
+// Enable foreign key constraints.
 db.pragma("foreign_keys = ON");
 
 console.log("DATABASE LOCATION:", databasePath);
 console.log("SQLite database connected!");
 
-// Create database tables
+// Create database tables.
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

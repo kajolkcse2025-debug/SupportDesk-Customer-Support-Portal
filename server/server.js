@@ -9,22 +9,29 @@ import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 
-// Check session secret
 if (!process.env.SESSION_SECRET) {
-  throw new Error("SESSION_SECRET is missing from .env file");
+  throw new Error("SESSION_SECRET is missing");
 }
 
 const app = express();
 
-// Middleware
+// Render runs behind a reverse proxy.
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: allowedOrigins,
   credentials: true
 }));
 
 app.use(express.json());
 
-// Session configuration
 app.use(session({
   name: "support.sid",
   secret: process.env.SESSION_SECRET,
@@ -33,12 +40,11 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 1000 * 60 * 60 * 24
   }
 }));
 
-// Health check API
 app.get("/api/health", (req, res) => {
   res.json({
     success: true,
@@ -47,15 +53,11 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Authentication APIs
 app.use("/api/auth", authRoutes);
-
-// Ticket APIs
 app.use("/api/tickets", ticketRoutes);
 
-// Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
